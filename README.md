@@ -4,6 +4,8 @@
 
 *A [Stratum](https://stratumdata.org) case study · data engineering · statistics · machine learning · analytics*
 
+**[▶ Try the live dashboard](https://retail-intelligence-dbke7prmoswrmzfysdpmwt.streamlit.app/)** · **[Read the case study (PDF)](presentation/Retail-Intelligence-Stratum.pdf)**
+
 ![Dashboard overview](reports/figures/dashboard_overview.jpg)
 
 ---

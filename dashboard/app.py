@@ -34,9 +34,13 @@ st.markdown(
                text-transform: uppercase; color: #8AA0FF; }
     div[data-testid="stMetric"] { background: #141A24; border: 1px solid #1B232F;
                border-radius: 12px; padding: 14px 16px; }
-    div[data-testid="stMetricValue"] { font-size: 1.65rem; font-family: 'Space Grotesk', sans-serif; }
-    div[data-testid="stMetricLabel"] p { font-family: 'IBM Plex Mono', monospace; font-size: 12px;
-               letter-spacing: .06em; text-transform: uppercase; color: #828D9E; }
+    [data-testid="stMetricValue"] { font-size: clamp(1.15rem, 1.7vw, 1.65rem); font-family: 'Space Grotesk', sans-serif; }
+    /* Streamlit ellipsises metrics in narrow columns ("£1..."); let them shrink and wrap instead. */
+    [data-testid="stMetricValue"] div, [data-testid="stMetricLabel"] div, [data-testid="stMetricLabel"] p,
+    [data-testid="stMetricLabel"] div.stMarkdownEllipsis, [data-testid="stMetricLabel"] div.stMarkdownEllipsis p {
+        overflow: visible !important; text-overflow: clip !important; white-space: normal !important;
+        overflow-wrap: normal !important; word-break: normal !important; }
+    [data-testid="stMetricLabel"] p { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: #828D9E; }
     .finding { background: #141A24; border: 1px solid #1B232F; border-left: 3px solid var(--c, #8AA0FF);
                border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
     .finding .q { color: #EEF2F8; font-weight: 500; }
