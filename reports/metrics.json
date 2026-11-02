@@ -1,0 +1,201 @@
+{
+  "segmentation": {
+    "k": 4,
+    "silhouette": {
+      "2": 0.445,
+      "3": 0.345,
+      "4": 0.359,
+      "5": 0.338,
+      "6": 0.332,
+      "7": 0.298,
+      "8": 0.298
+    }
+  },
+  "clv": {
+    "validation": {
+      "calibration_end": "2011-06-10",
+      "holdout_weeks": 26,
+      "customers": 4941,
+      "actual_total": 7712.0,
+      "predicted_total": 7580.308506708596,
+      "baseline_total": 12997.253309898962,
+      "mae_model": 1.0417683355836254,
+      "mae_baseline": 1.6740951825028272,
+      "corr_model": 0.8490311575648934,
+      "params": {
+        "r": 0.6839657443843529,
+        "alpha": 9.508222917295615,
+        "a": 0.15324994449448243,
+        "b": 3.3327773966969203
+      }
+    },
+    "params": {
+      "bgnbd": {
+        "r": 0.6698043218009015,
+        "alpha": 9.147823369082875,
+        "a": 0.10948864207587751,
+        "b": 2.429439583279454
+      },
+      "gamma_gamma": {
+        "p": 2.1742469400378766,
+        "q": 3.70478214168707,
+        "v": 485.072599963464
+      },
+      "freq_spend_corr": 0.1804270764591758
+    },
+    "total_12m": 8431510.78,
+    "top_decile_share": 0.5511737992464502
+  },
+  "propensity": {
+    "meta": {
+      "train_rows": 17214,
+      "test_rows": 5253,
+      "train_cutoffs": [
+        "2010-09-15",
+        "2010-12-14",
+        "2011-03-14",
+        "2011-06-12"
+      ],
+      "test_cutoff": "2011-09-10",
+      "base_rate_test": 0.4355606320197982
+    },
+    "results": [
+      {
+        "model": "recency rule",
+        "roc_auc": 0.7626,
+        "pr_auc": 0.6862,
+        "brier": NaN,
+        "lift_top_decile": 1.7799
+      },
+      {
+        "model": "logistic regression",
+        "roc_auc": 0.8037,
+        "pr_auc": 0.7795,
+        "brier": 0.1905,
+        "lift_top_decile": 2.1297
+      },
+      {
+        "model": "gradient boosting",
+        "roc_auc": 0.8013,
+        "pr_auc": 0.778,
+        "brier": 0.1926,
+        "lift_top_decile": 2.1385
+      }
+    ]
+  },
+  "forecast": {
+    "best_model": "ensemble (growth-naive + fourier)",
+    "scores": [
+      {
+        "model": "ensemble (growth-naive + fourier)",
+        "mase": 0.9607,
+        "mape": 0.1029,
+        "total_error_pct": 0.0309,
+        "coverage_80": NaN
+      },
+      {
+        "model": "seasonal naive",
+        "mase": 1.0097,
+        "mape": 0.1097,
+        "total_error_pct": -0.0205,
+        "coverage_80": NaN
+      },
+      {
+        "model": "fourier regression",
+        "mase": 1.2025,
+        "mape": 0.1184,
+        "total_error_pct": -0.0458,
+        "coverage_80": 0.8333
+      },
+      {
+        "model": "seasonal naive + growth",
+        "mase": 1.259,
+        "mape": 0.1338,
+        "total_error_pct": 0.1075,
+        "coverage_80": NaN
+      },
+      {
+        "model": "SARIMAX + fourier",
+        "mase": 2.1421,
+        "mape": 0.2134,
+        "total_error_pct": 0.1681,
+        "coverage_80": 0.5
+      },
+      {
+        "model": "naive (last week)",
+        "mase": 2.9599,
+        "mape": 0.2726,
+        "total_error_pct": -0.2915,
+        "coverage_80": NaN
+      }
+    ],
+    "next_12_weeks": 1706740.7851331537
+  },
+  "hypothesis_tests": [
+    {
+      "question": "Do customers acquired in Nov-Dec (gift season) return at a different rate within 180 days?",
+      "method": "Two-proportion z-test; Newcombe CI on the difference",
+      "groups": "peak n=1353, rest n=3596",
+      "statistic": 4.597810167841164,
+      "p_value": 4.269547343978558e-06,
+      "effect": "65.7% vs 58.5% return rate",
+      "effect_value": 0.07168575250319198,
+      "ci_low": 0.041405326497806386,
+      "ci_high": 0.10131407403053888,
+      "p_holm": 8.539094687957117e-06,
+      "significant": true
+    },
+    {
+      "question": "Do international customers place larger orders than UK customers?",
+      "method": "Mann-Whitney U (order values are heavily skewed); bootstrap CI of median difference",
+      "groups": "international n=3207, UK n=33267",
+      "statistic": 67694691.0,
+      "p_value": 3.8900472184682345e-140,
+      "effect": "median \u00a3418 vs \u00a3299; P(intl > UK) = 0.63",
+      "effect_value": 119.11000000000001,
+      "ci_low": 102.12975,
+      "ci_high": 139.40099999999995,
+      "p_holm": 1.5560188873872938e-139,
+      "significant": true
+    },
+    {
+      "question": "Does daily revenue differ by day of week?",
+      "method": "Kruskal-Wallis H test; epsilon-squared effect size",
+      "groups": "Thu \u00a333k, Tue \u00a329k, Wed \u00a329k, Mon \u00a328k, Fri \u00a326k, Sun \u00a317k, Sat \u00a310k",
+      "statistic": 129.3897785667611,
+      "p_value": 1.7278274453664393e-25,
+      "effect": "epsilon\u00b2 = 0.207; Saturday trading is almost nil",
+      "effect_value": 0.20668304617547922,
+      "ci_low": NaN,
+      "ci_high": NaN,
+      "p_holm": 5.183482336099318e-25,
+      "significant": true
+    },
+    {
+      "question": "Did average daily revenue grow year over year (Jan-Nov 2011 vs 2010)?",
+      "method": "Welch's t-test; bootstrap CI of the mean difference",
+      "groups": "2011 n=277 days, 2010 n=278 days",
+      "statistic": 0.5544837318920008,
+      "p_value": 0.5794739751003631,
+      "effect": "\u00a329,887 vs \u00a329,241 per trading day (+2.2%)",
+      "effect_value": 645.8767112952228,
+      "ci_low": -1714.2297254921707,
+      "ci_high": 2885.182894855594,
+      "p_holm": 0.5794739751003631,
+      "significant": false
+    },
+    {
+      "question": "Do customers who return items spend more overall than those who never do?",
+      "method": "Mann-Whitney U; bootstrap CI of median difference",
+      "groups": "returners n=2421, non-returners n=3431",
+      "statistic": 6662247.0,
+      "p_value": 0.0,
+      "effect": "median lifetime spend \u00a32,072 vs \u00a3479",
+      "effect_value": 1592.9699999999998,
+      "ci_low": 1483.1505000000002,
+      "ci_high": 1719.4407499999998,
+      "p_holm": 0.0,
+      "significant": true
+    }
+  ]
+}

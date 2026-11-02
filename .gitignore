@@ -1,0 +1,13 @@
+# Environments
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+
+# Rebuilt from source by `retail build` (the source archive is ~44 MB)
+data/raw/
+data/warehouse/
+
+# Committed on purpose: dashboard/data (1 MB serving layer) and reports/

@@ -1,0 +1,59 @@
+[project]
+name = "retail-intelligence"
+version = "1.0.0"
+description = "End-to-end retail analytics: ingestion, ETL, statistical modelling and a dashboard on the UCI Online Retail II dataset."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Stratum", email = "stratumfreelance@gmail.com" }]
+dependencies = [
+    "duckdb>=1.1",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "openpyxl>=3.1",
+    "numpy>=1.26",
+    "scipy>=1.13",
+    "statsmodels>=0.14",
+    "scikit-learn>=1.5",
+    "plotly>=5.24",
+    "streamlit>=1.39",
+    "requests>=2.32",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "jupytext>=1.16",
+    "nbclient>=0.10",
+    "ipykernel>=6.29",
+    "nbformat>=5.10",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+]
+
+[project.scripts]
+retail = "retail.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/retail"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# Long Streamlit column_config / template strings read better unwrapped.
+"dashboard/*" = ["E501"]
+# Notebooks end cells with bare expressions to display them, and markdown tables run long.
+"notebooks/*" = ["E501", "B018", "UP031"]

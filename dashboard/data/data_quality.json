@@ -1,0 +1,141 @@
+{
+  "checks": [
+    {
+      "name": "row count reconciles bronze -> silver",
+      "sql": "select abs((select count(*) from 'C:/Users/Cloud/Documents/Stratum/Project 1/data/raw/transactions_bronze.parquet') - (select count(*) from silver_transactions))",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "every silver row has a status",
+      "sql": "select count(*) from silver_transactions where row_status is null",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_sales: quantity and price strictly positive",
+      "sql": "select count(*) from fct_sales where quantity <= 0 or unit_price <= 0",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_returns: only cancellation invoices",
+      "sql": "select count(*) from fct_returns where invoice_no not like 'C%'",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_orders: invoice_no unique",
+      "sql": "select count(*) - count(distinct invoice_no) from fct_orders",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "dim_customer: key unique",
+      "sql": "select count(*) - count(distinct customer_key) from dim_customer",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "dim_product: key unique",
+      "sql": "select count(*) - count(distinct product_key) from dim_product",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_sales -> dim_product referential integrity",
+      "sql": "select count(*) from fct_sales s anti join dim_product p on s.product_key = p.product_key",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_sales -> dim_customer referential integrity",
+      "sql": "select count(*) from fct_sales s anti join dim_customer c on s.customer_key = c.customer_key where s.customer_key is not null",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "fct_sales -> dim_date referential integrity",
+      "sql": "select count(*) from fct_sales s anti join dim_date d on s.date_key = d.date_key",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "revenue reconciles fct_sales = fct_orders",
+      "sql": "select (abs((select sum(line_revenue) from fct_sales) - (select sum(order_value) from fct_orders)) > 1)::int",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "daily KPI has no calendar gaps",
+      "sql": "select (select count(*) from dim_date) - (select count(*) from mart_daily_kpis)",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "cohort retention within [0, 1]",
+      "sql": "select count(*) from mart_cohort_retention where retention < 0 or retention > 1",
+      "severity": "error",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "guest share of sale lines below 30%",
+      "sql": "select ((select avg(is_guest::int) from fct_sales) > 0.30)::int",
+      "severity": "warn",
+      "failures": 0,
+      "passed": true
+    },
+    {
+      "name": "no single day above 5x the median daily revenue",
+      "sql": "select count(*) from mart_daily_kpis where gross_revenue > 5 * (select median(gross_revenue) from mart_daily_kpis where orders > 0)",
+      "severity": "warn",
+      "failures": 0,
+      "passed": true
+    }
+  ],
+  "row_status": [
+    {
+      "row_status": "valid_sale",
+      "n": 1003214,
+      "revenue": 19642692.15
+    },
+    {
+      "row_status": "duplicate",
+      "n": 34335,
+      "revenue": 431716.87
+    },
+    {
+      "row_status": "cancellation",
+      "n": 17914,
+      "revenue": -716425.97
+    },
+    {
+      "row_status": "zero_or_negative_price",
+      "n": 5929,
+      "revenue": 0.0
+    },
+    {
+      "row_status": "non_product",
+      "n": 5886,
+      "revenue": 69111.79
+    },
+    {
+      "row_status": "test_or_adjustment",
+      "n": 93,
+      "revenue": -139844.29
+    }
+  ]
+}
