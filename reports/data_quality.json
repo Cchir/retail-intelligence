@@ -2,7 +2,7 @@
   "checks": [
     {
       "name": "row count reconciles bronze -> silver",
-      "sql": "select abs((select count(*) from 'C:/Users/Cloud/Documents/Stratum/Project 1/data/raw/transactions_bronze.parquet') - (select count(*) from silver_transactions))",
+      "sql": "select abs((select count(*) from './data/raw/transactions_bronze.parquet') - (select count(*) from silver_transactions))",
       "severity": "error",
       "failures": 0,
       "passed": true

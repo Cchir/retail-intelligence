@@ -70,7 +70,9 @@ def run(con) -> list[Check]:
         "from silver_transactions group by 1 order by n desc"
     ).df()
     report = {
-        "checks": [asdict(c) | {"passed": c.passed} for c in CHECKS],
+        # Report paths relative to the repo so the published report doesn't carry local paths.
+        "checks": [asdict(c) | {"sql": c.sql.replace(config.ROOT.as_posix(), "."), "passed": c.passed}
+                   for c in CHECKS],
         "row_status": status.to_dict(orient="records"),
     }
     (config.REPORTS / "data_quality.json").write_text(json.dumps(report, indent=2, default=str))
